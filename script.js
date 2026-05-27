@@ -1,70 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Smooth Reveal Effect for Resume Sections
-    const sections = document.querySelectorAll('.resume-section');
-    
-    const revealOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
-    };
+    // Luxury Cards Dynamic Perspective Interaction Shift
+    const creativeCards = document.querySelectorAll('.card');
 
-    const revealOnScroll = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            entry.target.style.opacity = "1";
-            entry.target.style.transform = "translateY(0)";
-            observer.unobserve(entry.target);
+    creativeCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left; // x coordinate inside the element.
+            const y = e.clientY - rect.top;  // y coordinate inside the element.
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            // Calculate subtle tilting angles
+            const rotateX = (centerY - y) / 25; 
+            const rotateY = (x - centerX) / 25;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-3px)`;
+            card.style.boxShadow = `0 15px 35px rgba(245, 158, 11, 0.08)`;
         });
-    }, revealOptions);
 
-    sections.forEach(section => {
-        // Set initial structural styles for a subtle fade-in
-        section.style.opacity = "0";
-        section.style.transform = "translateY(20px)";
-        section.style.transition = "opacity 0.6s ease-out, transform 0.6s ease-out";
-        revealOnScroll.observe(section);
-    });
-
-    // 2. Quick Click-to-Copy for Contact Details
-    const contactItems = document.querySelectorAll('.header-contact p');
-    
-    contactItems.forEach(item => {
-        item.style.cursor = 'pointer';
-        item.setAttribute('title', 'Click to copy info');
-        
-        item.addEventListener('click', () => {
-            // Extract text content, removing any icon spacing
-            const textToCopy = item.textContent.trim();
-            
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                // Temporary visual tooltip feedback
-                const originalText = item.innerHTML;
-                item.innerHTML = `<i class="fa-solid fa-check" style="color: #22c55e;"></i> Copied!`;
-                
-                setTimeout(() => {
-                    item.innerHTML = originalText;
-                }, 1200);
-            }).catch(err => {
-                console.error('Could not copy text: ', err);
-            });
+        card.addEventListener('mouseleave', () => {
+            // Restore smooth initial structural identity values
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+            card.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.01)';
         });
     });
-
-    // 3. Document Title Synchronization for Print Saving
-    // Ensures that when the user saves as PDF, the file defaults to a professional name
-    const printBtn = document.querySelector('.print-btn');
-    if (printBtn) {
-        printBtn.addEventListener('click', () => {
-            const originalTitle = document.title;
-            document.title = "Resume_Surya_Nimmagadda";
-            
-            // Trigger the print dialogue box
-            window.print();
-            
-            // Restore title state after dialogue closes
-            setTimeout(() => {
-                document.title = originalTitle;
-            }, 1000);
-        });
-    }
 });
