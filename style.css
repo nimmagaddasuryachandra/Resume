@@ -1,4 +1,4 @@
-/* --- High-End Global Setup & Variables --- */
+/* --- Global Resets & Layout Settings --- */
 * {
     margin: 0;
     padding: 0;
@@ -26,12 +26,13 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    padding: 130px 20px 40px;
+    padding: 130px 0 40px; /* Removed side padding here to prevent double scaling issues */
     position: relative;
     overflow-x: hidden;
+    width: 100%;
 }
 
-/* --- Backdrop Glow Fields --- */
+/* --- Ambient Glow Layer --- */
 .mesh-layer {
     position: fixed;
     top: 0;
@@ -65,9 +66,11 @@ body {
     left: -5%;
 }
 
+/* --- Master Application Wrapper --- */
 .web-shell {
     width: 100%;
     max-width: 1100px;
+    padding: 0 20px; /* Controlled side padding here */
     animation: masterFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -76,7 +79,7 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Floating Modular Navigation Bar --- */
+/* --- Mobile-First Floating Header Menu --- */
 .glass-nav {
     position: fixed;
     top: 20px;
@@ -88,7 +91,7 @@ body {
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
     border: 1px solid rgba(255, 255, 255, 0.6);
-    padding: 14px 40px;
+    padding: 14px 30px;
     border-radius: 50px;
     display: flex;
     justify-content: space-between;
@@ -97,7 +100,6 @@ body {
     box-shadow: 0 15px 35px -10px rgba(217, 119, 6, 0.05);
 }
 
-/* Fluid Brand Title Typography targeting text truncation bugs */
 .nav-brand {
     font-size: clamp(1.1rem, 4vw, 1.3rem);
     font-weight: 800;
@@ -155,15 +157,15 @@ body {
 .nav-download-btn:hover {
     background: var(--accent-amber);
     transform: translateY(-1px);
-    box-shadow: 0 10px 20px rgba(217, 119, 6, 0.15);
 }
 
-/* --- Section Layout & Header Anti-Clip Offset --- */
+/* --- Section Layouts --- */
 .stream-block {
     display: flex;
     flex-direction: column;
     margin-bottom: 40px;
     scroll-margin-top: 110px;
+    width: 100%;
 }
 
 .glass-card {
@@ -190,7 +192,7 @@ body {
 
 .block-headline i { color: var(--accent-amber); }
 
-/* --- Overview Card Details --- */
+/* --- Overview Profile Card (Strict Mobile-Fix Applied) --- */
 .status-badge {
     display: inline-flex;
     align-items: center;
@@ -212,18 +214,19 @@ body {
     border-radius: 50%;
 }
 
-/* Fluid typography prevents name overflow on smaller screens */
+/* CRITICAL MOBILE PROFILE TEXT WRAP OVERRIDES */
 .hero-card h1 {
-    font-size: clamp(1.8rem, 7vw, 2.8rem);
+    font-size: clamp(1.8rem, 6.5vw, 2.8rem);
     font-weight: 800;
     letter-spacing: -1px;
     line-height: 1.15;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    word-break: break-word; /* Forces browser to split name across lines cleanly without pushing layout box rules out */
 }
 
 .hero-card h3 {
-    font-size: clamp(0.95rem, 4vw, 1.2rem);
+    font-size: clamp(0.95rem, 3.8vw, 1.2rem);
     font-weight: 600;
     color: var(--text-secondary);
     margin-top: 8px;
@@ -237,6 +240,7 @@ body {
     margin-top: 15px;
 }
 
+/* --- Contact Strip Blocks System --- */
 .contact-strip-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -255,8 +259,7 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    min-width: 0; /* Prevents structural flex overflow */
+    min-width: 0; /* Direct browser layout containment flag override */
 }
 
 .icon-shell {
@@ -275,7 +278,8 @@ body {
 .node-meta { 
     display: flex; 
     flex-direction: column; 
-    min-width: 0;
+    min-width: 0; 
+    width: 100%;
 }
 
 .node-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
@@ -285,18 +289,17 @@ body {
     font-weight: 600; 
     color: var(--text-secondary); 
     margin-top: 2px; 
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Keeps long email/GitHub strings beautifully wrapped */
+    text-overflow: ellipsis; /* Keeps data addresses contained elegantly */
+    white-space: nowrap;
+    width: 100%;
 }
 
 .strip-node:hover {
     border-color: rgba(245, 158, 11, 0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.02);
 }
 
-/* --- Timeline Layout Matrix --- */
+/* --- Educational Timeline Tracks --- */
 .vertical-timeline {
     display: flex;
     flex-direction: column;
@@ -342,7 +345,7 @@ body {
 .org-name { font-size: 0.88rem; font-weight: 600; color: var(--accent-amber); margin-top: 2px; }
 .org-details { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-top: 8px; }
 
-/* --- Skills Capsule Layout --- */
+/* --- Capsules Metric Custom Bars --- */
 .skills-capsule-grid {
     display: flex;
     flex-direction: column;
@@ -357,14 +360,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
-}
-
-.skill-panel-card:hover {
-    transform: translateX(4px);
-    border-color: rgba(245, 158, 11, 0.25);
-    box-shadow: 0 10px 25px -10px rgba(217, 119, 6, 0.08);
 }
 
 .skill-panel-info {
@@ -420,7 +416,7 @@ body {
 .cad-fill { background: #ef4444; }
 .react-fill { background: #2563eb; }
 
-/* --- Project Matrices --- */
+/* --- Production Projects Grid Layout --- */
 .projects-editorial-grid {
     display: flex;
     flex-direction: column;
@@ -432,12 +428,6 @@ body {
     border: 1px solid var(--border-ink);
     padding: 35px;
     border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-.premium-project-panel:hover {
-    border-color: rgba(245, 158, 11, 0.3);
-    transform: translateX(4px);
 }
 
 .panel-top {
@@ -484,7 +474,7 @@ body {
     border-radius: 6px;
 }
 
-/* --- Minimal Production Footer --- */
+/* --- Minimal Footer --- */
 .minimal-footer {
     border-top: 1px solid var(--border-ink);
     margin-top: 40px;
@@ -501,61 +491,46 @@ body {
 }
 
 /* ==========================================================================
-   COMPREHENSIVE RESPONSIVE DESIGN & BREAKPOINT MEDIA QUERIES
+   STRICT MOBILE FLUID OPTIMIZATION BREAKPOINTS
    ========================================================================== */
 
-/* --- Tablet Devices (max-width: 960px) --- */
+/* Tablet Framework Optimizations */
 @media (max-width: 960px) {
-    body { padding: 120px 24px 40px; }
-    .glass-nav { width: 92%; padding: 12px 30px; }
-    .glass-card { padding: 35px; }
+    body { padding-top: 120px; }
+    .glass-nav { width: 92%; padding: 12px 25px; }
+    .glass-card { padding: 35px 30px; }
 }
 
-/* --- Mobile Device Structures (max-width: 768px) --- */
+/* Core Phone Display Viewports (Direct Fix for Layout Breaking) */
 @media (max-width: 768px) {
     .glass-nav {
-        top: 15px;
-        padding: 10px 20px;
+        top: 12px;
+        padding: 10px 18px;
         border-radius: 30px;
         width: 92%;
     }
     
-    .nav-links { display: none; } /* Hides scrolling anchors on mobile viewports to maximize top-bar spacing */
-    .nav-brand { font-size: 1.1rem; }
-    .nav-download-btn { padding: 8px 16px; font-size: 0.78rem; }
+    .nav-links { display: none !important; } /* Removes nav link text completely to prevent button collisions */
+    .nav-brand { font-size: 1.05rem; }
+    .nav-download-btn { padding: 8px 14px; font-size: 0.75rem; }
     
-    body { padding: 95px 16px 30px; } /* Compact body spacing layers */
-    .stream-block { margin-bottom: 25px; scroll-margin-top: 90px; }
-    .glass-card { padding: 25px 20px; border-radius: 20px; }
+    body { padding: 90px 0 30px; } /* Complete block isolation reset */
+    .web-shell { padding: 0 14px; }
     
-    .contact-strip-grid { grid-template-columns: 1fr; gap: 15px; margin-top: 25px; }
-    .premium-project-panel { padding: 25px 20px; }
-    .skill-panel-card { padding: 20px; }
+    .stream-block { margin-bottom: 20px; scroll-margin-top: 90px; }
+    .glass-card { padding: 25px 18px; border-radius: 16px; }
+    
+    .contact-strip-grid { grid-template-columns: 1fr; gap: 12px; }
+    .skill-panel-card { padding: 20px 16px; }
+    .premium-project-panel { padding: 25px 18px; }
 }
 
-/* --- Micro-Screen Viewports (max-width: 480px) --- */
+/* Extreme Compact Mobile Width Adjustments */
 @media (max-width: 480px) {
     .row-header { flex-direction: column; align-items: flex-start; gap: 4px; }
     .panel-top { flex-direction: column; align-items: flex-start; gap: 6px; }
-    .skill-panel-info { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .skill-panel-info { flex-direction: column; align-items: flex-start; gap: 6px; }
     
-    .node-value {
-        font-size: 0.78rem; /* Micro sizing adjustment handles deep text limits natively */
-    }
-}
-
-/* --- Vector PDF Print Specifications --- */
-@media print {
-    body { background: #ffffff !important; padding: 0; }
-    .mesh-layer, .glass-nav, .status-badge, .panel-status { display: none !important; }
-    .glass-card {
-        background: #ffffff !important;
-        box-shadow: none !important;
-        border: 1px solid #e2e8f0 !important;
-        backdrop-filter: none !important;
-    }
-    .web-shell { gap: 20px; }
-    .stream-block { page-break-inside: avoid; }
-    .capsule-track { border: 1px solid #e2e8f0; background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .capsule-fill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .hero-card h1 { font-size: 1.7rem; }
+    .node-value { font-size: 0.75rem; } /* Safeguards layout block width boundaries */
 }
